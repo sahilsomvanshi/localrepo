@@ -96,46 +96,42 @@
   <div class="indicators" id="indicators"></div>
 </div>
 
-<!-- Background music -->
-<audio id="bgMusic" autoplay loop>
+<audio id="bgMusic" loop>
   <source src="dil_keh_raha_hai.mp3" type="audio/mp3">
+  Your browser does not support the audio element.
 </audio>
 
+<button id="musicBtn" style="
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+  background: #1f1f1f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+">
+  ▶️ Play Music
+</button>
+
 <script>
-  const track = document.getElementById('carouselTrack');
-  const indicators = document.getElementById('indicators');
-  const totalSlides = track.children.length;
-  let currentIndex = 0;
+  const music = document.getElementById('bgMusic');
+  const musicBtn = document.getElementById('musicBtn');
+  let isPlaying = false;
 
-  function createIndicators() {
-    for (let i = 0; i < totalSlides; i++) {
-      const dot = document.createElement('div');
-      dot.classList.add('indicator');
-      if (i === 0) dot.classList.add('active');
-      dot.addEventListener('click', () => goToSlide(i));
-      indicators.appendChild(dot);
+  musicBtn.addEventListener('click', () => {
+    if (!isPlaying) {
+      music.play();
+      musicBtn.textContent = '⏸️ Pause Music';
+    } else {
+      music.pause();
+      musicBtn.textContent = '▶️ Play Music';
     }
-  }
-
-  function goToSlide(index) {
-    currentIndex = index;
-    updateCarousel();
-  }
-
-  function updateCarousel() {
-    track.style.transform = `translateX(-${currentIndex * 100}vw)`;
-    [...indicators.children].forEach((dot, i) => {
-      dot.classList.toggle('active', i === currentIndex);
-    });
-  }
-
-  function autoSlide() {
-    currentIndex = (currentIndex + 1) % totalSlides;
-    updateCarousel();
-  }
-
-  createIndicators();
-  setInterval(autoSlide, 4000);
+    isPlaying = !isPlaying;
+  });
 </script>
 
 </body>
