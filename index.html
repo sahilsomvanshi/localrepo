@@ -98,7 +98,6 @@
 
 <audio id="bgMusic" loop>
   <source src="dil_keh_raha_hai.mp3" type="audio/mp3">
-  Your browser does not support the audio element.
 </audio>
 
 <button id="musicBtn" style="
@@ -118,6 +117,7 @@
 </button>
 
 <script>
+  // Music play/pause control
   const music = document.getElementById('bgMusic');
   const musicBtn = document.getElementById('musicBtn');
   let isPlaying = false;
@@ -132,6 +132,40 @@
     }
     isPlaying = !isPlaying;
   });
+
+  // Carousel auto-slide logic
+  const track = document.getElementById('carouselTrack');
+  const indicators = document.getElementById('indicators');
+  const slides = document.querySelectorAll('.carousel-item');
+  const totalSlides = slides.length;
+  let currentIndex = 0;
+
+  // Create indicator dots dynamically
+  for (let i = 0; i < totalSlides; i++) {
+    const dot = document.createElement('div');
+    dot.classList.add('indicator');
+    if (i === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => goToSlide(i));
+    indicators.appendChild(dot);
+  }
+
+  function goToSlide(index) {
+    track.style.transform = `translateX(-${index * 100}vw)`;
+    updateIndicators(index);
+    currentIndex = index;
+  }
+
+  function updateIndicators(index) {
+    document.querySelectorAll('.indicator').forEach((dot, i) => {
+      dot.classList.toggle('active', i === index);
+    });
+  }
+
+  // Auto-slide every 5 seconds
+  setInterval(() => {
+    let nextIndex = (currentIndex + 1) % totalSlides;
+    goToSlide(nextIndex);
+  }, 5000);
 </script>
 
 </body>
